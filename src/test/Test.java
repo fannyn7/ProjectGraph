@@ -26,7 +26,7 @@ public class Test extends JPanel {
 				Knoten tail = kanten.getTail();
 				int tailX = tail.getPosX();
 				int tailY = tail.getPosY();
-				int flow = kanten.getFlow();
+				int flow = kanten.getCapacity();
 				g.drawLine(headX, headY, tailX, tailY);
 				// g.drawString(Integer.toString(flow), Math.min(headX, tailX)+Math.abs(headX-tailX/2), Math.min(headY, tailY)+Math.abs(headY-tailY/2));
 			}

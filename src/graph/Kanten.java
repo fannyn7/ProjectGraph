@@ -7,12 +7,22 @@ public class Kanten {
 
 	private Knoten tail;
 	private Knoten head;
+	private int capacity;
 	private int flow;
 	
 	public Kanten(Knoten tailKnoten, Knoten headKnoten, int flowEdge){
 		tail = tailKnoten;
 		head = headKnoten;
-		flow = flowEdge;
+		capacity = flowEdge;
+		flow = 0;
+	}
+
+	public int getFlow() {
+		return flow;
+	}
+
+	public void setFlow(int flow) {
+		this.flow = flow;
 	}
 
 	public Knoten getTail() {
@@ -31,12 +41,12 @@ public class Kanten {
 		this.head = head;
 	}
 
-	public int getFlow() {
-		return flow;
+	public int getCapacity() {
+		return capacity;
 	}
 
-	public void setFlow(int flow) {
-		this.flow = flow;
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 
 	public boolean intersectOne(ArrayList<Kanten> kanten) {
@@ -60,7 +70,11 @@ public class Kanten {
 				yi = ((y3-y4)*(x1*y2-y1*x2)-(y1-y2)*(x3*y4-y3*x4))/d;
 				if (!(xi <= Math.min(x1,x2) || xi >= Math.max(x1,x2))){
 					if (!(xi <= Math.min(x3,x4) || xi >= Math.max(x3,x4))){
-						result = true;
+						if (!(yi <= Math.min(y1,y2) || yi >= Math.max(y1,y2))){
+							if (!(yi <= Math.min(y3,y4) || yi >= Math.max(y3,y4))){
+								result = true;
+							}
+						}
 					}
 				}
 			}

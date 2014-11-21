@@ -1,6 +1,7 @@
 package zufallsgenerator;
 
 import graph.Graph;
+import graph.GraphMatrix;
 import graph.Kanten;
 import graph.Knoten;
 
@@ -51,5 +52,22 @@ public class Zufallsgenerator {
 		ArrayList<Knoten> knoten = createZKnoten(knotenzahl);
 		ArrayList<Kanten> kanten = createZKanten(knoten, maxKapazitat);
 		return new Graph(knoten, kanten);
+	}
+	
+	public static GraphMatrix createZGMatrix(int knotenzahl, int maxKapazitat){
+
+		int n = knotenzahl;
+		int randomKapazität;
+		Random r = new Random();
+		GraphMatrix graph = new GraphMatrix(n);
+		for (int i = 0; i<n; i++){
+			for (int j = 0; j<n; j++){
+				randomKapazität = r.nextInt(maxKapazitat);
+				graph.setFlow(randomKapazität, i, j);
+				randomKapazität = r.nextInt(maxKapazitat);
+				graph.setFlow(randomKapazität, j, i);
+			}
+		}
+		return graph;
 	}
 }
