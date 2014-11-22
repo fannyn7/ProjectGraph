@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import algorithmen.FordFulkerson;
 import zufallsgenerator.Zufallsgenerator;
 import graph.Graph;
 import graph.Kanten;
@@ -33,11 +34,15 @@ public class Test extends JPanel {
 	}
 
 		public static void main(String[] args){
-			Test test = new	Test();
+/*			Test test = new	Test();
 			JFrame frame = new JFrame("Graph Visualiesierung");
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.getContentPane().add(test);
 			frame.setSize(500,500);
-			frame.setVisible(true);
+			frame.setVisible(true);*/
+			
+			int[][] graph = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
+			FordFulkerson ff = new FordFulkerson();
+			ff.fordFulkerson(graph, 0, 5);
 		}
 }
