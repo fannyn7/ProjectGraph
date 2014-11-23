@@ -29,19 +29,19 @@ public class Zufallsgenerator {
 		ArrayList<Kanten> kanten = new ArrayList<Kanten>();
 		Kanten newKanten;
 		Random r = new Random();
-		int randomKapazität = r.nextInt(maxKapazitat);
-		kanten.add(new Kanten(knoten.get(0), knoten.get(1), randomKapazität));
-		kanten.add(new Kanten(knoten.get(1), knoten.get(0), randomKapazität));
+		int randomKapazitat = r.nextInt(maxKapazitat);
+		kanten.add(new Kanten(knoten.get(0), knoten.get(1), randomKapazitat));
+		kanten.add(new Kanten(knoten.get(1), knoten.get(0), randomKapazitat));
 		for (int i=0; i<knoten.size()-1; i++){
 			for (int j=2; j<knoten.size(); j++){
 				System.out.println("Segment : [" + i + " , " + j + "]");
-				randomKapazität = r.nextInt(maxKapazitat);
-				newKanten = new Kanten(knoten.get(j), knoten.get(i), randomKapazität);
+				randomKapazitat = r.nextInt(maxKapazitat);
+				newKanten = new Kanten(knoten.get(j), knoten.get(i), randomKapazitat);
 				System.out.println("result : " +newKanten.intersectOne(kanten) );
 				if (!newKanten.intersectOne(kanten) && i!=j){
 					System.out.println("add Segment");
 					kanten.add(newKanten);
-					kanten.add(new Kanten(knoten.get(i), knoten.get(j), randomKapazität));
+					kanten.add(new Kanten(knoten.get(i), knoten.get(j), randomKapazitat));
 				}
 			}
 		}
@@ -57,15 +57,15 @@ public class Zufallsgenerator {
 	public static GraphMatrix createZGMatrix(int knotenzahl, int maxKapazitat){
 
 		int n = knotenzahl;
-		int randomKapazität;
+		int randomKapazitat;
 		Random r = new Random();
 		GraphMatrix graph = new GraphMatrix(n);
 		for (int i = 0; i<n; i++){
 			for (int j = 0; j<n; j++){
-				randomKapazität = r.nextInt(maxKapazitat);
-				graph.setFlow(randomKapazität, i, j);
-				randomKapazität = r.nextInt(maxKapazitat);
-				graph.setFlow(randomKapazität, j, i);
+				randomKapazitat = r.nextInt(maxKapazitat);
+				graph.setFlow(randomKapazitat, i, j);
+				randomKapazitat = r.nextInt(maxKapazitat);
+				graph.setFlow(randomKapazitat, j, i);
 			}
 		}
 		return graph;
