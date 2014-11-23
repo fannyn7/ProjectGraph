@@ -42,7 +42,8 @@ public class Test extends JPanel {
 			frame.setVisible(true);*/
 			
 			int[][] graph = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
+		//	int[][] graph = {{0,1,2,0},{0,0,0,2},{0,5,0,1},{0,0,0,0}};
 			FordFulkerson ff = new FordFulkerson();
-			ff.fordFulkerson(graph, 0, 5);
+			ff.fordFulkerson(graph, 0, 3);
 		}
 }
