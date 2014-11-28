@@ -1,14 +1,9 @@
 package algorithmen;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.Stack;
-import java.util.TreeSet;
 
 import graph.Graph;
-import graph.GraphMatrix;
-import graph.Kanten;
-import graph.Knoten;
 
 public class FordFulkerson {
 
@@ -17,9 +12,9 @@ public class FordFulkerson {
 	public FordFulkerson(){
 		pathList = new ArrayList<ArrayList<Integer>>();
 	}
-	public void fordFulkerson(int[][] graph, int start, int target){
+	public void fordFulkerson(Graph graph, int start, int target){
 		
-		int n = graph.length;
+		int n = graph.getKnotenPosition().size();
 		int[][] flow = new int[n][n];
 		int floxMax = 0;
 		for (int i=0; i<n; i++){
@@ -29,10 +24,11 @@ public class FordFulkerson {
 		}
 		
 		//while there exists a path p from s to t in the residual Network Gf
-		int[][] residualGraph = graph;
-		for (int i = 0; i < graph.length; i++){
-			for (int j = 0; j < graph.length; j++){
-				residualGraph[i][j] = graph[i][j] - flow[i][j];
+		Graph residualGraph = graph;
+		int[][] residualGraphCapacity = residualGraph.getCapacity();
+		for (int i = 0; i < n; i++){
+			for (int j = 0; j < n; j++){
+				residualGraphCapacity[i][j] = graph.getCapacity()[i][j] - flow[i][j];
 			}	
 		}
 /*		System.out.println("Graphe residual : " );
@@ -41,13 +37,14 @@ public class FordFulkerson {
 		}*/
 
 		
-		ArrayList<Integer> path = DFS(residualGraph, start, target);
+		ArrayList<Integer> path = DFS(residualGraphCapacity, start, target);
+		
 		while(path != null && !pathList.contains(path)){
 			int minCapacityPath = 1000;
 			int capacity = 0;
 			
 			for (int i = 0; i < path.size() - 1; i++){
-				capacity = residualGraph[path.get(i)][path.get(i+1)];
+				capacity = residualGraphCapacity[path.get(i)][path.get(i+1)];
 				if (capacity < minCapacityPath){
 					minCapacityPath = capacity;
 				}
@@ -68,9 +65,9 @@ public class FordFulkerson {
 				//System.out.println("flow de " + path.get(i) + "  : "+ flow[path.get(i)][path.get(i+1)]);
 			}
 			
-			for (int i = 0; i < graph.length; i++){
-				for (int j = 0; j < graph.length; j++){
-					residualGraph[i][j] = residualGraph[i][j] - flow[i][j];
+			for (int i = 0; i < n; i++){
+				for (int j = 0; j < n; j++){
+					residualGraphCapacity[i][j] = residualGraphCapacity[i][j] - flow[i][j];
 				}	
 			}
 			
@@ -79,7 +76,7 @@ public class FordFulkerson {
 				System.out.println("{" + residualGraph[i][0] + " , " + residualGraph[i][1] + " , " + residualGraph[i][2] + " , " + residualGraph[i][3] + " , " + residualGraph[i][4] + " , " + residualGraph[i][5] + "}");
 			}*/
 			pathList.add(path);
-			path = DFS(residualGraph, start, target);
+			path = DFS(residualGraphCapacity, start, target);
 		}
 		System.out.println("flow Max : " + floxMax);
 	}

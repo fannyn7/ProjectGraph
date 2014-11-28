@@ -1,25 +1,33 @@
 package test;
 
-import java.awt.Graphics;
-
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import algorithmen.FordFulkerson;
 import zufallsgenerator.Zufallsgenerator;
 import graph.Graph;
-import graph.Kanten;
-import graph.Knoten;
 
-public class Test extends JPanel {
-		public void	paintComponent(Graphics	g){
+public class Test {
+/*		public void	paintComponent(Graphics	g, Graphbis graph){
 			super.paintComponent(g);
 			Graph graph = Zufallsgenerator.createZG(10, 10);
 			System.out.println("nb knoten" + graph.getKnoten().size());
 			int i=0;
-			for (Knoten knoten : graph.getKnoten()){
-				g.fillOval(knoten.getPosX()-5, knoten.getPosY()-5, 10, 10);
+			ArrayList<Position> positions = graph.getKnotenPosition();
+			for (Position p : positions){
+				g.fillOval(p.getX()-5, p.getY()-5, 10, 10);
 			}
+			int[][] capacities = graph.getCapacity();
+			int flow;
+			int n = capacities.length;
+			for (int i = 1; i < n ; i++){
+				for (int j = 1; j < n ; j++){
+					flow = capacities[i][j];
+					if (flow != 0){
+						g.drawLine(positions.get(i).getX(), positions.get(i).getY(), positions.get(j).getX(), positions.get(j).getY());
+					}
+				}	
+			}
+			
 			for (Kanten kanten: graph.getKanten()){
 				Knoten head = kanten.getHead();
 				int headX = head.getPosX();
@@ -32,18 +40,40 @@ public class Test extends JPanel {
 				// g.drawString(Integer.toString(flow), Math.min(headX, tailX)+Math.abs(headX-tailX/2), Math.min(headY, tailY)+Math.abs(headY-tailY/2));
 			}
 	}
-
+*/
 		public static void main(String[] args){
-/*			Test test = new	Test();
+			//ArrayList<Position> pos = new ArrayList<Position>();
+			//pos.add(new Position(50,300));
+			//pos.add(new Position(150,200));
+			//pos.add(new Position(250,400));
+			//pos.add(new Position(350,200));
+			//pos.add(new Position(450,400));
+			//pos.add(new Position(650,300));
+			//int[][] capacity = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
+			//Graphbis graph = new Graphbis(pos, capacity);
+						
+			
+			Graph graph = Zufallsgenerator.createZG(10, 20);
+			
 			JFrame frame = new JFrame("Graph Visualiesierung");
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.getContentPane().add(test);
-			frame.setSize(500,500);
-			frame.setVisible(true);*/
+			frame.getContentPane().add(graph);
+			frame.setSize(1000,600);
+			frame.setVisible(true);
 			
-			int[][] graph = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
-		//	int[][] graph = {{0,1,2,0},{0,0,0,2},{0,5,0,1},{0,0,0,0}};
+/*			int n = graph.getCapacity().length;
+			int flow;
+			for (int i = 0; i < n ; i++){
+				for (int j = 0; j < n ; j++){
+					flow =  graph.getCapacity()[i][j];
+					if (flow != 0){
+						System.out.println("flow[" + i + "][" + j + "] : " + flow);						
+					}
+				}
+			}*/
+			
+			
 			FordFulkerson ff = new FordFulkerson();
-			ff.fordFulkerson(graph, 0, 3);
+			ff.fordFulkerson(graph, 0, 5);
 		}
 }
