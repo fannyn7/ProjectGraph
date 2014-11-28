@@ -40,7 +40,7 @@ public class FordFulkerson {
 		ArrayList<Integer> path = DFS(residualGraphCapacity, start, target);
 		
 		while(path != null && !pathList.contains(path)){
-			int minCapacityPath = 1000;
+			int minCapacityPath = Integer.MAX_VALUE;
 			int capacity = 0;
 			
 			for (int i = 0; i < path.size() - 1; i++){
@@ -54,7 +54,7 @@ public class FordFulkerson {
 			
 			// for each edge (u,v) in p 
 			for (int i = 0; i < path.size() - 1; i++){
-				// 	if (u,v) appartient à E
+				// 	if (u,v) appartient a E
 				//if (graph[path.get(i)][path.get(i+1)] != 0){
 					// (u,v).f = (v,u).f + cf(p)
 					flow[path.get(i)][path.get(i+1)] = flow[path.get(i)][path.get(i+1)] + minCapacityPath;
@@ -133,7 +133,7 @@ public class FordFulkerson {
 				result.add(i);
 			}			
 		}
-		// System.out.println("adjacent à " + node + " : " + result);
+		// System.out.println("adjacent a " + node + " : " + result);
 		return result;
 	}
 }
