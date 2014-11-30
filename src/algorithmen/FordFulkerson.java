@@ -1,18 +1,30 @@
 package algorithmen;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 
+import javax.swing.JFrame;
+
+import graph.DrawGraph;
 import graph.Graph;
 
 public class FordFulkerson {
 
+	private Graph graph;
 	private ArrayList<ArrayList<Integer>> pathList;
 	
-	public FordFulkerson(){
+	public FordFulkerson(Graph g){
+		graph = g;
 		pathList = new ArrayList<ArrayList<Integer>>();
 	}
-	public void fordFulkerson(Graph graph, int start, int target){
+
+	public FordFulkerson(Graph g, ArrayList<ArrayList<Integer>> list){
+		graph = g;
+		pathList = list;
+	}
+	
+	public void fordFulkerson(int start, int target){
 		
 		int n = graph.getKnotenPosition().size();
 		int[][] flow = new int[n][n];
@@ -31,12 +43,13 @@ public class FordFulkerson {
 				residualGraphCapacity[i][j] = graph.getCapacity()[i][j] - flow[i][j];
 			}	
 		}
-/*		System.out.println("Graphe residual : " );
-		for (int i=0; i < residualGraph.length; i++){
-			System.out.println("{" + residualGraph[i][0] + " , " + residualGraph[i][1] + " , " + residualGraph[i][2] + " , " + residualGraph[i][3] + " , " + residualGraph[i][4] + " , " + residualGraph[i][5] + "}");
+/*		System.out.println("Graphe residual début : " );
+		for (int i=0; i < residualGraphCapacity.length; i++){
+			System.out.println("{" + residualGraphCapacity[i][0] + " , " + residualGraphCapacity[i][1] + " , " + residualGraphCapacity[i][2] + " , " + residualGraphCapacity[i][3] + " , " + residualGraphCapacity[i][4] + " , " + residualGraphCapacity[i][5] + "}");
 		}*/
 
-		
+		residualGraph.setCapacity(residualGraphCapacity);
+		//drawGraph(residualGraph, new ArrayList<Integer>());		
 		ArrayList<Integer> path = DFS(residualGraphCapacity, start, target);
 		
 		while(path != null && !pathList.contains(path)){
@@ -59,8 +72,9 @@ public class FordFulkerson {
 					// (u,v).f = (v,u).f + cf(p)
 					flow[path.get(i)][path.get(i+1)] = flow[path.get(i)][path.get(i+1)] + minCapacityPath;
 				//} else {
-					// else (v,u).f = (v,u).f - cf(p)						
-					flow[path.get(i+1)][path.get(i)] = flow[path.get(i+1)][path.get(i)] - minCapacityPath;					
+					// else (v,u).f = (v,u).f - cf(p)			
+					System.out.println("flow  "+ path.get(i) + "," + path.get(i+1) + " : " + flow[path.get(i)][path.get(i+1)]);
+					flow[path.get(i+1)][path.get(i)] = -flow[path.get(i)][path.get(i+1)];					
 				//}
 				//System.out.println("flow de " + path.get(i) + "  : "+ flow[path.get(i)][path.get(i+1)]);
 			}
@@ -71,26 +85,26 @@ public class FordFulkerson {
 				}	
 			}
 			
-			/*System.out.println("Graphe residual : " );
-			for (int i=0; i < residualGraph.length; i++){
-				System.out.println("{" + residualGraph[i][0] + " , " + residualGraph[i][1] + " , " + residualGraph[i][2] + " , " + residualGraph[i][3] + " , " + residualGraph[i][4] + " , " + residualGraph[i][5] + "}");
-			}*/
+			System.out.println("Graphe residual : " );
+			for (int i=0; i < residualGraphCapacity.length; i++){
+				System.out.println("{" + residualGraphCapacity[i][0] + " , " + residualGraphCapacity[i][1] + " , " + residualGraphCapacity[i][2] + " , " + residualGraphCapacity[i][3] + " , " + residualGraphCapacity[i][4] + " , " + residualGraphCapacity[i][5] + "}");
+			}
+			
+			
 			pathList.add(path);
+			//drawGraph(residualGraph, path);
 			path = DFS(residualGraphCapacity, start, target);
 		}
 		System.out.println("flow Max : " + floxMax);
 	}
+
 
 	public ArrayList<Integer> DFS(int[][] graph, int start, int target) {
 		int n = graph.length;
 		Stack<Integer> open = new Stack<Integer>();
 		ArrayList<Integer> closed = new ArrayList<Integer>();
 		int next;
-		boolean[] isSeen = new boolean[n];
-		for (int i = 0; i < n ; i++){
-			isSeen[i] = false;
-		}	
-		isSeen[start] = true;
+		
 		open.push(start);
 		if (start != target){
 			while (!open.isEmpty()){
@@ -103,8 +117,10 @@ public class FordFulkerson {
 							System.out.println("fin : " + closed);
 							return closed;
 						} else {
-							open.push(node);							
+								open.push(node);															
 						}
+					} else {
+						closed.remove(new Integer(next));
 					}
 				}
 			}
@@ -125,7 +141,7 @@ public class FordFulkerson {
 		}
 		return null;		
 	}	
-	
+
 	public ArrayList<Integer> getAdjacent(int[][] graph, int node){
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		for (int i = 0; i < graph.length; i++){
@@ -133,7 +149,16 @@ public class FordFulkerson {
 				result.add(i);
 			}			
 		}
-		// System.out.println("adjacent a " + node + " : " + result);
+		//System.out.println("adjacent a " + node + " : " + result);
 		return result;
 	}
+	
+	public void drawGraph(Graph residualGraph, ArrayList<Integer> path){
+		JFrame frame = new JFrame("Graph Visualiesierung");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().add(new DrawGraph(residualGraph, path));
+		frame.setSize(1000,600);
+		frame.setVisible(true);
+	}
+	
 }

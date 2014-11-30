@@ -38,7 +38,7 @@ public class Graph extends JPanel {
 	public void drawGraph(){
 		JFrame frame = new JFrame("Graph Visualiesierung");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().add(this);
+		frame.getContentPane().add(new Graph(knotenPosition, capacity));
 		frame.setSize(1000,600);
 		frame.setVisible(true);
 	}
@@ -104,6 +104,10 @@ public class Graph extends JPanel {
 							if (!(xi <= Math.min(x3,x4) || xi >= Math.max(x3,x4))){
 								if (!(yi <= Math.min(y1,y2) || yi >= Math.max(y1,y2))){
 									if (!(yi <= Math.min(y3,y4) || yi >= Math.max(y3,y4))){
+										//System.out.println("intersection de ? " + knotenPosition.indexOf(pos1) + "," + knotenPosition.indexOf(pos2));
+										//System.out.println("(" +  i + "," + j + ")");
+										//System.out.println("xi = " +  xi);
+										//System.out.println("yi = " +  yi);
 										result = true;
 									}
 								}
@@ -111,8 +115,19 @@ public class Graph extends JPanel {
 						}
 					}
 				}
-				}	
+			}
 		}
 		return result;
 	}
+	
+	public void printGraph(){
+		for (int i=0; i < capacity.length; i++){
+			System.out.print("{");
+			for (int j=0; j < capacity.length; j++){
+				System.out.print(capacity[i][j] + "  ");
+			}
+			System.out.print("}\n");
+		}		
+	}
+
 }
