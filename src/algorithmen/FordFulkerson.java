@@ -13,6 +13,7 @@ public class FordFulkerson {
 
 	private Graph graph;
 	private ArrayList<ArrayList<Integer>> pathList;
+	public int i = 0;
 	
 	public FordFulkerson(Graph g){
 		graph = g;
@@ -30,7 +31,7 @@ public class FordFulkerson {
 		int[][] flow = new int[n][n];
 		int floxMax = 0;
 		for (int i=0; i<n; i++){
-			for (int j=0; i<n; i++){
+			for (int j=0; j<n; j++){
 				flow[i][j] = 0;
 			}	
 		}
@@ -43,15 +44,13 @@ public class FordFulkerson {
 				residualGraphCapacity[i][j] = graph.getCapacity()[i][j] - flow[i][j];
 			}	
 		}
-/*		System.out.println("Graphe residual début : " );
+/*		System.out.println("Graphe residual dï¿½but : " );
 		for (int i=0; i < residualGraphCapacity.length; i++){
 			System.out.println("{" + residualGraphCapacity[i][0] + " , " + residualGraphCapacity[i][1] + " , " + residualGraphCapacity[i][2] + " , " + residualGraphCapacity[i][3] + " , " + residualGraphCapacity[i][4] + " , " + residualGraphCapacity[i][5] + "}");
 		}*/
 
 		residualGraph.setCapacity(residualGraphCapacity);
-		//drawGraph(residualGraph, new ArrayList<Integer>());		
 		ArrayList<Integer> path = DFS(residualGraphCapacity, start, target);
-		
 		while(path != null && !pathList.contains(path)){
 			int minCapacityPath = Integer.MAX_VALUE;
 			int capacity = 0;
@@ -70,7 +69,7 @@ public class FordFulkerson {
 				// 	if (u,v) appartient a E
 				//if (graph[path.get(i)][path.get(i+1)] != 0){
 					// (u,v).f = (v,u).f + cf(p)
-					flow[path.get(i)][path.get(i+1)] = flow[path.get(i)][path.get(i+1)] + minCapacityPath;
+					flow[path.get(i)][path.get(i+1)] = /*flow[path.get(i)][path.get(i+1)] +*/ minCapacityPath;
 				//} else {
 					// else (v,u).f = (v,u).f - cf(p)			
 					System.out.println("flow  "+ path.get(i) + "," + path.get(i+1) + " : " + flow[path.get(i)][path.get(i+1)]);
@@ -92,7 +91,7 @@ public class FordFulkerson {
 			
 			
 			pathList.add(path);
-			//drawGraph(residualGraph, path);
+			drawGraph(residualGraph, path);
 			path = DFS(residualGraphCapacity, start, target);
 		}
 		System.out.println("flow Max : " + floxMax);
@@ -154,7 +153,7 @@ public class FordFulkerson {
 	}
 	
 	public void drawGraph(Graph residualGraph, ArrayList<Integer> path){
-		JFrame frame = new JFrame("Graph Visualiesierung");
+		JFrame frame = new JFrame("Graph Visualiesierung " + i++);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(new DrawGraph(residualGraph, path));
 		frame.setSize(1000,600);

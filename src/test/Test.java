@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import algorithmen.EdmondsKarp;
 import algorithmen.FordFulkerson;
 import zufallsgenerator.Zufallsgenerator;
+import graph.DrawGraph;
 import graph.Graph;
 import graph.Position;
 
@@ -55,8 +56,18 @@ public class Test {
 			pos.add(new Position(650,300));
 			//int[][] capacity = {{0,9,9,0,0,0},{0,0,10,8,0,0},{0,0,0,1,3,0},{0,0,0,0,0,10},{0,0,0,8,0,7},{0,0,0,0,0,0}};
 			int[][] capacity = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
+			
+
+			
 			Graph graph = new Graph(pos, capacity);
-						
+			
+			
+			JFrame frame = new JFrame("Graph Visualiesierung graphe de base");
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.getContentPane().add(new DrawGraph(graph));
+			frame.setSize(1000,600);
+			frame.setVisible(true);
+			
 			
 			//Graph graph = Zufallsgenerator.createZG(5, 20);
 			
@@ -70,8 +81,8 @@ public class Test {
 					}
 				}
 			}*/
-			
-			FordFulkerson ff = new FordFulkerson(graph);
+			Graph graph2 = new Graph(pos, capacity);
+			FordFulkerson ff = new FordFulkerson(graph2);
 			ff.fordFulkerson(0, 5);
 			
 			//EdmondsKarp ek = new EdmondsKarp(graph);
