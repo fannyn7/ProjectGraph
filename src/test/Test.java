@@ -48,15 +48,21 @@ public class Test {
 */
 		public static void main(String[] args){
 			ArrayList<Position> pos = new ArrayList<Position>();
-			pos.add(new Position(50,300));
-			pos.add(new Position(150,200));
-			pos.add(new Position(250,400));
-			pos.add(new Position(350,200));
-			pos.add(new Position(450,400));
-			pos.add(new Position(650,300));
-			//int[][] capacity = {{0,9,9,0,0,0},{0,0,10,8,0,0},{0,0,0,1,3,0},{0,0,0,0,0,10},{0,0,0,8,0,7},{0,0,0,0,0,0}};
-			int[][] capacity = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
+			pos.add(new Position(50,150));
+			pos.add(new Position(150,50));
+			pos.add(new Position(250,250));
+			pos.add(new Position(350,50));
+			pos.add(new Position(450,250));
+			pos.add(new Position(650,150));
 			
+			// flow max ff = 12
+			int[][] capacity = {{0,9,9,0,0,0},{0,0,10,8,0,0},{0,0,0,1,3,0},{0,0,0,0,0,10},{0,0,0,8,0,7},{0,0,0,0,0,0}};
+			
+			// flow max ff = 19
+			//int[][] capacity = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
+			
+			// flow max ff = 7
+			//int[][] capacity = {{0,10,0,0,7,0},{0,0,2,0,0,0},{0,0,0,6,0,0},{0,0,0,0,0,0},{0,0,0,0,0,10},{0,0,0,0,0,0}}; 
 
 			
 			Graph graph = new Graph(pos, capacity);
@@ -64,7 +70,7 @@ public class Test {
 			
 			JFrame frame = new JFrame("Graph Visualiesierung graphe de base");
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.getContentPane().add(new DrawGraph(graph));
+			frame.getContentPane().add(new DrawGraph(new Graph(graph.getKnotenPosition(),graph.getCapacity())));
 			frame.setSize(1000,600);
 			frame.setVisible(true);
 			
@@ -81,8 +87,7 @@ public class Test {
 					}
 				}
 			}*/
-			Graph graph2 = new Graph(pos, capacity);
-			FordFulkerson ff = new FordFulkerson(graph2);
+			FordFulkerson ff = new FordFulkerson(graph);
 			ff.fordFulkerson(0, 5);
 			
 			//EdmondsKarp ek = new EdmondsKarp(graph);

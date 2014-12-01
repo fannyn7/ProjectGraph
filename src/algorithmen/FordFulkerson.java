@@ -14,7 +14,7 @@ public class FordFulkerson {
 	private Graph graph;
 	private ArrayList<ArrayList<Integer>> pathList;
 	public int i = 0;
-	
+
 	public FordFulkerson(Graph g){
 		graph = g;
 		pathList = new ArrayList<ArrayList<Integer>>();
@@ -24,9 +24,9 @@ public class FordFulkerson {
 		graph = g;
 		pathList = list;
 	}
-	
+
 	public void fordFulkerson(int start, int target){
-		
+
 		int n = graph.getKnotenPosition().size();
 		int[][] flow = new int[n][n];
 		int floxMax = 0;
@@ -35,64 +35,77 @@ public class FordFulkerson {
 				flow[i][j] = 0;
 			}	
 		}
-		
+
 		//while there exists a path p from s to t in the residual Network Gf
-		Graph residualGraph = graph;
-		int[][] residualGraphCapacity = residualGraph.getCapacity();
+		Graph residualGraph = new Graph(graph.getKnotenPosition(),graph.getCapacity());
+		
+		/*int[][] residualGraphCapacity = residualGraph.getCapacity();
+		/// ne sert à rien a priori ?? (flow = 0 ici)
 		for (int i = 0; i < n; i++){
 			for (int j = 0; j < n; j++){
 				residualGraphCapacity[i][j] = graph.getCapacity()[i][j] - flow[i][j];
 			}	
 		}
-/*		System.out.println("Graphe residual d�but : " );
-		for (int i=0; i < residualGraphCapacity.length; i++){
-			System.out.println("{" + residualGraphCapacity[i][0] + " , " + residualGraphCapacity[i][1] + " , " + residualGraphCapacity[i][2] + " , " + residualGraphCapacity[i][3] + " , " + residualGraphCapacity[i][4] + " , " + residualGraphCapacity[i][5] + "}");
-		}*/
-
 		residualGraph.setCapacity(residualGraphCapacity);
-		ArrayList<Integer> path = DFS(residualGraphCapacity, start, target);
+		*/
+		
+		
+		ArrayList<Integer> path = DFS(/*residualGraphCapacity*/ residualGraph.getCapacity(), start, target);
 		while(path != null && !pathList.contains(path)){
+			drawGraph(new Graph(residualGraph.getKnotenPosition(),residualGraph.getCapacity()), path);
+			for (int i = 0; i < n; i++){
+				for (int j = 0; j < n; j++){
+					flow[i][j] = 0;
+				}	
+			}
+			
 			int minCapacityPath = Integer.MAX_VALUE;
 			int capacity = 0;
-			
+
 			for (int i = 0; i < path.size() - 1; i++){
-				capacity = residualGraphCapacity[path.get(i)][path.get(i+1)];
+				capacity = residualGraph.getCapacity()[path.get(i)][path.get(i+1)];
 				if (capacity < minCapacityPath){
 					minCapacityPath = capacity;
 				}
 			}
-			
+
 			floxMax += minCapacityPath;
-			
+
 			// for each edge (u,v) in p 
 			for (int i = 0; i < path.size() - 1; i++){
 				// 	if (u,v) appartient a E
 				//if (graph[path.get(i)][path.get(i+1)] != 0){
-					// (u,v).f = (v,u).f + cf(p)
-					flow[path.get(i)][path.get(i+1)] = /*flow[path.get(i)][path.get(i+1)] +*/ minCapacityPath;
+				// (u,v).f = (v,u).f + cf(p)
+				flow[path.get(i)][path.get(i+1)] = /*flow[path.get(i)][path.get(i+1)] +*/ minCapacityPath;
 				//} else {
-					// else (v,u).f = (v,u).f - cf(p)			
-					System.out.println("flow  "+ path.get(i) + "," + path.get(i+1) + " : " + flow[path.get(i)][path.get(i+1)]);
-					flow[path.get(i+1)][path.get(i)] = -flow[path.get(i)][path.get(i+1)];					
+				// else (v,u).f = (v,u).f - cf(p)			
+				System.out.println("flow  "+ path.get(i) + "," + path.get(i+1) + " : " + flow[path.get(i)][path.get(i+1)]);
+				//flow[path.get(i+1)][path.get(i)] = -flow[path.get(i)][path.get(i+1)];					
 				//}
 				//System.out.println("flow de " + path.get(i) + "  : "+ flow[path.get(i)][path.get(i+1)]);
 			}
-			
+
 			for (int i = 0; i < n; i++){
 				for (int j = 0; j < n; j++){
-					residualGraphCapacity[i][j] = residualGraphCapacity[i][j] - flow[i][j];
+					residualGraph.getCapacity()[i][j] -= flow[i][j];
 				}	
 			}
-			
+
 			System.out.println("Graphe residual : " );
-			for (int i=0; i < residualGraphCapacity.length; i++){
-				System.out.println("{" + residualGraphCapacity[i][0] + " , " + residualGraphCapacity[i][1] + " , " + residualGraphCapacity[i][2] + " , " + residualGraphCapacity[i][3] + " , " + residualGraphCapacity[i][4] + " , " + residualGraphCapacity[i][5] + "}");
+			for (int i=0; i < residualGraph.getCapacity().length; i++){
+				System.out.println("{" + residualGraph.getCapacity()[i][0] + " , " + residualGraph.getCapacity()[i][1] + " , " + residualGraph.getCapacity()[i][2] + " , " + residualGraph.getCapacity()[i][3] + " , " + residualGraph.getCapacity()[i][4] + " , " + residualGraph.getCapacity()[i][5] + "}");
 			}
-			
-			
+
+
 			pathList.add(path);
-			drawGraph(residualGraph, path);
-			path = DFS(residualGraphCapacity, start, target);
+			//drawGraph(new Graph(residualGraph.getKnotenPosition(),residualGraph.getCapacity()), path);
+
+			/*for (int i = 0; i < n; i++){
+				for (int j = 0; j < n; j++){
+					System.out.println("residualGraphCapacity["+i+"]["+j+"] = " + residualGraphCapacity[i][j]) ;
+				}	
+			}*/
+			path = DFS(residualGraph.getCapacity(), start, target);
 		}
 		System.out.println("flow Max : " + floxMax);
 	}
@@ -102,41 +115,49 @@ public class FordFulkerson {
 		int n = graph.length;
 		Stack<Integer> open = new Stack<Integer>();
 		ArrayList<Integer> closed = new ArrayList<Integer>();
-		int next;
-		
+		int next = 0, previous;
+		System.out.println("DFS");
 		open.push(start);
+		System.out.println("push : " + start);
 		if (start != target){
+			System.out.println("stack : " + open);
+
 			while (!open.isEmpty()){
 				next = open.pop();
 				closed.add(next);
+				System.out.println("\npath : " + closed + "\nstack : " + open);
+				boolean hasAdjacents = false;
 				for (int node : getAdjacent(graph, next)){ 
+					hasAdjacents = true;
 					if (!closed.contains(node)){
 						if (node == target){
 							closed.add(node);
+							System.out.println("\npath : " + closed + "\nstack : " + open);
 							System.out.println("fin : " + closed);
 							return closed;
 						} else {
-								open.push(node);															
+							open.push(node);
+							System.out.println("\npath : " + closed + "\nstack : " + open);
 						}
 					} else {
 						closed.remove(new Integer(next));
+						System.out.println("\npath : " + closed + "\nstack : " + open);
 					}
+				}
+				if (hasAdjacents == false) {
+					// on est dans un puits
+					previous = getParent(graph,next);
+					if (previous >= 0) {
+						graph[previous][next] = 0;						
+					}
+					System.out.println(next + " est un puits");
+					System.out.println("remove " + previous + "->" + next);
+					closed.remove(new Integer(next));
+					System.out.println("\npath : " + closed + "\nstack : " + open);
 				}
 			}
 			return null;
-			
-/*			for (int node : getAdjacent(graph, start)){
-				if (!isSeen[node]){
-						isSeen[node] = true;
-						System.out.println("node pushed : " + node);
-						path.push(node);
-						DFS(graph, node, target);
-						System.out.println("node poped : " + path.peek());
-						path.pop();
-					} 
-				}
-				System.out.println("node poped : " + path.peek());
-				path.pop();*/
+
 		}
 		return null;		
 	}	
@@ -152,6 +173,15 @@ public class FordFulkerson {
 		return result;
 	}
 	
+	public int getParent(int[][] graph, int node){
+		for (int i = graph.length - 1; i >= 0; i--){
+			if (graph[i][node] > 0){
+				return i;
+			}			
+		}
+		return -1;
+	}
+
 	public void drawGraph(Graph residualGraph, ArrayList<Integer> path){
 		JFrame frame = new JFrame("Graph Visualiesierung " + i++);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -159,5 +189,5 @@ public class FordFulkerson {
 		frame.setSize(1000,600);
 		frame.setVisible(true);
 	}
-	
+
 }

@@ -83,7 +83,8 @@ public class DrawGraph  extends JPanel {
 				y2 = graph.getKnotenPosition().get(pathGraph.get(k+1)).getY();
 				flow = capacities[pathGraph.get(k)][pathGraph.get(k+1)];
 				g.drawLine(x1, y1 , x2, y2);
-				System.out.println("path : flow[" + pathGraph.get(k) + "][" + pathGraph.get(k+1) + "] : " + flow);
+				/// la ligne en dessous donne des choses fausses
+				//System.out.println("path : flow[" + pathGraph.get(k) + "][" + pathGraph.get(k+1) + "] : " + flow);
 				g.drawString(Integer.toString(flow), Math.min(x1, x2)+Math.abs((x1-x2)/2)-5, Math.min(y1, y2)+Math.abs((y1-y2)/2)-5);						
 			}
 		}
