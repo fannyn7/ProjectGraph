@@ -38,7 +38,7 @@ public class FordFulkerson {
 
 		//while there exists a path p from s to t in the residual Network Gf
 		Graph residualGraph = new Graph(graph.getKnotenPosition(),graph.getCapacity());
-		
+
 		/*int[][] residualGraphCapacity = residualGraph.getCapacity();
 		/// ne sert à rien a priori ?? (flow = 0 ici)
 		for (int i = 0; i < n; i++){
@@ -47,9 +47,9 @@ public class FordFulkerson {
 			}	
 		}
 		residualGraph.setCapacity(residualGraphCapacity);
-		*/
-		
-		
+		 */
+
+
 		ArrayList<Integer> path = DFS(/*residualGraphCapacity*/ residualGraph.getCapacity(), start, target);
 		while(path != null && !pathList.contains(path)){
 			drawGraph(new Graph(residualGraph.getKnotenPosition(),residualGraph.getCapacity()), path);
@@ -58,7 +58,7 @@ public class FordFulkerson {
 					flow[i][j] = 0;
 				}	
 			}
-			
+
 			int minCapacityPath = Integer.MAX_VALUE;
 			int capacity = 0;
 
@@ -88,6 +88,7 @@ public class FordFulkerson {
 			for (int i = 0; i < n; i++){
 				for (int j = 0; j < n; j++){
 					residualGraph.getCapacity()[i][j] -= flow[i][j];
+					residualGraph.getCapacity()[j][i] += flow[i][j];
 				}	
 			}
 
@@ -113,6 +114,53 @@ public class FordFulkerson {
 
 	public ArrayList<Integer> DFS(int[][] graph, int start, int target) {
 		int n = graph.length;
+		Stack<Integer> stack = new Stack<Integer>();
+		int[] isSeen = new int[n];
+		int[] nbAdj = new int[n];
+		int current = start;
+		int previous;
+
+		stack.push(start);
+
+		for (int i=0; i<n; i++){
+			isSeen[i] = 0;
+			nbAdj[i] = 0;
+		}
+		
+		isSeen[start]=1;
+		
+		if (start != target){
+
+			while (!stack.isEmpty()){
+				previous = current;
+				current = stack.peek();
+
+				ArrayList<Integer> adjacents = getAdjacent(graph, current); 
+				int i = nbAdj[current];
+				int nextAdj;
+				if (i==adjacents.size() ){
+					isSeen[current]=2;
+					stack.pop();
+				} else {
+					nextAdj = adjacents.get(i);
+					if (isSeen[nextAdj]==0){
+						isSeen[nextAdj] = 1;
+						stack.push(nextAdj);
+						if (nextAdj==target){
+							System.out.println("stack : " + stack);
+							System.out.println("list : " + new ArrayList<Integer>(stack));
+							return  new ArrayList<Integer>(stack);
+						}
+					}
+					nbAdj[current] ++;
+				}
+			}
+		}
+	return null;
+}	
+
+
+/*int n = graph.length;
 		Stack<Integer> open = new Stack<Integer>();
 		ArrayList<Integer> closed = new ArrayList<Integer>();
 		int next = 0, previous;
@@ -125,26 +173,34 @@ public class FordFulkerson {
 			while (!open.isEmpty()){
 				next = open.pop();
 				closed.add(next);
+				System.out.println(next+ " added to close ");
 				System.out.println("\npath : " + closed + "\nstack : " + open);
-				boolean hasAdjacents = false;
-				for (int node : getAdjacent(graph, next)){ 
-					hasAdjacents = true;
-					if (!closed.contains(node)){
-						if (node == target){
-							closed.add(node);
-							System.out.println("\npath : " + closed + "\nstack : " + open);
-							System.out.println("fin : " + closed);
-							return closed;
+				int nbAdjacents = 0;
+				ArrayList<Integer> adjacents = getAdjacent(graph, next); 
+				if (adjacents!=null){
+					for (int node : adjacents){ 
+						if (!closed.contains(node)){
+							if (node == target){
+								closed.add(node);
+								System.out.println(node+ " added to close ");
+								System.out.println("\npath : " + closed + "\nstack : " + open);
+								System.out.println("fin : " + closed);
+								return closed;
+							} else {
+								open.push(node);
+								System.out.println("\npath : " + closed + "\nstack : " + open);
+							}
 						} else {
-							open.push(node);
-							System.out.println("\npath : " + closed + "\nstack : " + open);
+							nbAdjacents++;						
+							if (nbAdjacents==getAdjacent(graph, next).size()){
+								closed.remove(new Integer(next));
+								System.out.println(node +" déjà là");
+								System.out.println(next+ " removed to close 1 ");
+								System.out.println("\npath : " + closed + "\nstack : " + open);
+							}	
 						}
-					} else {
-						closed.remove(new Integer(next));
-						System.out.println("\npath : " + closed + "\nstack : " + open);
 					}
-				}
-				if (hasAdjacents == false) {
+				} else {
 					// on est dans un puits
 					previous = getParent(graph,next);
 					if (previous >= 0) {
@@ -153,41 +209,41 @@ public class FordFulkerson {
 					System.out.println(next + " est un puits");
 					System.out.println("remove " + previous + "->" + next);
 					closed.remove(new Integer(next));
+					System.out.println(next+ " removed to close 2 ");
 					System.out.println("\npath : " + closed + "\nstack : " + open);
 				}
 			}
 			return null;
 
 		}
-		return null;		
-	}	
+		return null;		*/
 
-	public ArrayList<Integer> getAdjacent(int[][] graph, int node){
-		ArrayList<Integer> result = new ArrayList<Integer>();
-		for (int i = 0; i < graph.length; i++){
-			if (graph[node][i] > 0){
-				result.add(i);
-			}			
-		}
-		//System.out.println("adjacent a " + node + " : " + result);
-		return result;
+public ArrayList<Integer> getAdjacent(int[][] graph, int node){
+	ArrayList<Integer> result = new ArrayList<Integer>();
+	for (int i = 0; i < graph.length; i++){
+		if (graph[node][i] > 0){
+			result.add(i);
+		}			
 	}
-	
-	public int getParent(int[][] graph, int node){
-		for (int i = graph.length - 1; i >= 0; i--){
-			if (graph[i][node] > 0){
-				return i;
-			}			
-		}
-		return -1;
-	}
+	//System.out.println("adjacent a " + node + " : " + result);
+	return result;
+}
 
-	public void drawGraph(Graph residualGraph, ArrayList<Integer> path){
-		JFrame frame = new JFrame("Graph Visualiesierung " + i++);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().add(new DrawGraph(residualGraph, path));
-		frame.setSize(1000,600);
-		frame.setVisible(true);
+public int getParent(int[][] graph, int node){
+	for (int i = graph.length - 1; i >= 0; i--){
+		if (graph[i][node] > 0){
+			return i;
+		}			
 	}
+	return -1;
+}
+
+public void drawGraph(Graph residualGraph, ArrayList<Integer> path){
+	JFrame frame = new JFrame("Graph Visualiesierung " + i++);
+	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	frame.getContentPane().add(new DrawGraph(residualGraph, path));
+	frame.setSize(1000,600);
+	frame.setVisible(true);
+}
 
 }
