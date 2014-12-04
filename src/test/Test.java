@@ -56,7 +56,7 @@ public class Test {
 			pos.add(new Position(650,150));
 			
 			// flow max ff = 12
-			int[][] capacity = {{0,9,9,0,0,0},{0,0,10,8,0,0},{0,0,0,1,3,0},{0,0,0,0,0,10},{0,0,0,8,0,7},{0,0,0,0,0,0}};
+			//int[][] capacity = {{0,9,9,0,0,0},{0,0,10,8,0,0},{0,0,0,1,3,0},{0,0,0,0,0,10},{0,0,0,8,0,7},{0,0,0,0,0,0}};
 			
 			// flow max ff = 19
 			//int[][] capacity = {{0,10,10,0,0,0},{0,0,2,4,8,0},{0,0,0,0,9,0},{0,0,0,0,0,10},{0,0,0,6,0,10},{0,0,0,0,0,0}};
@@ -67,33 +67,31 @@ public class Test {
 			
 			//int[][] capacity = {{0 , 3 , 1 , 0 , 0 , 0},{7 , 0 , 2 , 4 , 1 , 0},{9 , 0 , 0 , 0 , 0 , 0},{0 , 0 , 0 , 0 , 6 , 4},{0 , 7 , 9 , 0 , 0 , 0},{0 , 0 , 0 , 6 , 10 , 0}};
 			
-			Graph graph = new Graph(pos, capacity);
+			//Graph graph = new Graph(pos, capacity);
+			Graph graph = Zufallsgenerator.createZG(6, 20);
 			
 			
-			JFrame frame = new JFrame("Graph Visualiesierung graphe de base");
+/*			JFrame frame = new JFrame("Graph Visualiesierung graphe de base");
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.getContentPane().add(new DrawGraph(new Graph(graph.getKnotenPosition(),graph.getCapacity())));
 			frame.setSize(1000,600);
-			frame.setVisible(true);
+			frame.setVisible(true);*/
 			
-			
-			//Graph graph = Zufallsgenerator.createZG(5, 20);
-			
-/*			int n = graph.getCapacity().length;
+			int n = graph.getCapacity().length;
 			int flow;
-			for (int i = 0; i < n ; i++){
-				for (int j = 0; j < n ; j++){
-					flow =  graph.getCapacity()[i][j];
-					if (flow != 0){
-						System.out.println("flow[" + i + "][" + j + "] : " + flow);						
-					}
-				}
-			}*/
+			System.out.println("Graph avant FF : ");
+			graph.printGraph();
+			
 			FordFulkerson ff = new FordFulkerson(graph);
 			ff.fordFulkerson(0, 5);
+
+			System.out.println("Graph après FF : ");
+			System.out.println("Graph avant EK : ");
+			graph.printGraph();
 			
-			//EdmondsKarp ek = new EdmondsKarp(graph);
-			//ek.edmondsKarp(0, 5);
-			
+			EdmondsKarp ek = new EdmondsKarp(graph);
+			ek.edmondsKarp(0, 5);
+			System.out.println("Graph après EK : ");
+			graph.printGraph();
 		}
 }

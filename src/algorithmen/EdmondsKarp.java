@@ -44,31 +44,40 @@ public class EdmondsKarp {
 				residualGraphCapacity[i][j] = graph.getCapacity()[i][j] - flow[i][j];
 			}
 		}
-		System.out.println("Graph :");
+		//System.out.println("Graph :");
 		ArrayList<Position> pos = new ArrayList<Position>();
 		Graph g = new Graph(pos, residualGraphCapacity);
-		g.printGraph();
+		//g.printGraph();
 
 		int[] path = BFS(residualGraphCapacity, start, target);
 
 		while (path != null && !pathList.contains(path)) {
 			int capacityPath = getCapacityPath(residualGraphCapacity, path, target, start);
-
+			//System.out.println("capacity path : " + capacityPath );
 			floxMax += capacityPath;
 
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					flow[i][j] = 0;
+				}
+			}
+			
 			int v = target;
 			int u;
 			while (v != start) {
 				u = path[v];
+				//System.out.println("flow : " + u + " , " + v + " : " + capacityPath );
 				flow[u][v] = /*flow[u][v] +*/ capacityPath;
 				flow[v][u] = /*flow[v][u] */- capacityPath;
+				residualGraphCapacity[u][v] = residualGraphCapacity[u][v] - flow[u][v];
+				residualGraphCapacity[v][u] -= flow[v][u];
 				v = u;
 			}
 			pathList.add(path);
 			//drawGraph(residualGraph, path);
-			for (int i = 0; i < n; i++) {
+	/*		for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
-					/* ici je pense que c'est plutôt :
+					 ici je pense que c'est plutôt :
 					 * residualGraphCapacity[i][j] = graphCapacity[i][j] - flow[i][j];
 					 * avec plus haut :
 					 * int[][] graphCapacity = residualGraph.getCapacity();
@@ -85,18 +94,19 @@ public class EdmondsKarp {
 						flow[v][u] = _capacityPath;
 						
 						et pareil pour FordFulkerson du coup
- 					 */
+ 					 
 					residualGraphCapacity[i][j] = residualGraphCapacity[i][j] - flow[i][j];
+					residualGraphCapacity[j][i] += flow[i][j];
 				}
 			}
-			System.out.println("Graph :");
+	*/		//System.out.println("Graph :");
 			pos = new ArrayList<Position>();
 			g = new Graph(pos, residualGraphCapacity);
-			g.printGraph();
+			//g.printGraph();
 			
 			path = BFS(residualGraphCapacity, start, target);
 		}
-		System.out.println("flow Max : " + floxMax);
+		System.out.println("flow Max Edmonds-Karp: " + floxMax);
 	}
 
 	private int getCapacityPath(int[][] residualGraphCapacity, int[] path, int target, int start) {
@@ -158,6 +168,12 @@ public class EdmondsKarp {
 			System.out.println(isSeen[i]);
 		}*/
 		if (exist){
+			//System.out.print("path : " + target + " , ");
+			u = target;
+			while (u!=start){
+				//System.out.print( path[u] + " , ");
+				u = path[u];
+			}
 			return path;			
 		}else {
 			return null;

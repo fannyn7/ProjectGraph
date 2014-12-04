@@ -52,7 +52,7 @@ public class FordFulkerson {
 
 		ArrayList<Integer> path = DFS(/*residualGraphCapacity*/ residualGraph.getCapacity(), start, target);
 		while(path != null && !pathList.contains(path)){
-			drawGraph(new Graph(residualGraph.getKnotenPosition(),residualGraph.getCapacity()), path);
+			//drawGraph(new Graph(residualGraph.getKnotenPosition(),residualGraph.getCapacity()), path);
 			for (int i = 0; i < n; i++){
 				for (int j = 0; j < n; j++){
 					flow[i][j] = 0;
@@ -79,7 +79,7 @@ public class FordFulkerson {
 				flow[path.get(i)][path.get(i+1)] = /*flow[path.get(i)][path.get(i+1)] +*/ minCapacityPath;
 				//} else {
 				// else (v,u).f = (v,u).f - cf(p)			
-				System.out.println("flow  "+ path.get(i) + "," + path.get(i+1) + " : " + flow[path.get(i)][path.get(i+1)]);
+				//System.out.println("flow  "+ path.get(i) + "," + path.get(i+1) + " : " + flow[path.get(i)][path.get(i+1)]);
 				//flow[path.get(i+1)][path.get(i)] = -flow[path.get(i)][path.get(i+1)];					
 				//}
 				//System.out.println("flow de " + path.get(i) + "  : "+ flow[path.get(i)][path.get(i+1)]);
@@ -92,11 +92,11 @@ public class FordFulkerson {
 				}	
 			}
 
-			System.out.println("Graphe residual : " );
+			/*System.out.println("Graphe residual : " );
 			for (int i=0; i < residualGraph.getCapacity().length; i++){
 				System.out.println("{" + residualGraph.getCapacity()[i][0] + " , " + residualGraph.getCapacity()[i][1] + " , " + residualGraph.getCapacity()[i][2] + " , " + residualGraph.getCapacity()[i][3] + " , " + residualGraph.getCapacity()[i][4] + " , " + residualGraph.getCapacity()[i][5] + "}");
 			}
-
+*/
 
 			pathList.add(path);
 			//drawGraph(new Graph(residualGraph.getKnotenPosition(),residualGraph.getCapacity()), path);
@@ -108,7 +108,7 @@ public class FordFulkerson {
 			}*/
 			path = DFS(residualGraph.getCapacity(), start, target);
 		}
-		System.out.println("flow Max : " + floxMax);
+		System.out.println("flow Max Ford-Fulkerson : " + floxMax);
 	}
 
 
@@ -147,8 +147,8 @@ public class FordFulkerson {
 						isSeen[nextAdj] = 1;
 						stack.push(nextAdj);
 						if (nextAdj==target){
-							System.out.println("stack : " + stack);
-							System.out.println("list : " + new ArrayList<Integer>(stack));
+							//System.out.println("stack : " + stack);
+							//System.out.println("list : " + new ArrayList<Integer>(stack));
 							return  new ArrayList<Integer>(stack);
 						}
 					}
