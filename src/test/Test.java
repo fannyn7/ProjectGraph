@@ -83,13 +83,13 @@ public class Test {
 			FordFulkerson ff = new FordFulkerson();
 			ff.fordFulkerson(graph, 0, 5);
 
-			System.out.println("Graph après FF : ");
+			System.out.println("Graph apres FF : ");
 			System.out.println("Graph avant EK : ");
 			graph.printGraph();
 			
 			EdmondsKarp ek = new EdmondsKarp(graph);
 			ek.edmondsKarp(0, 5);
-			System.out.println("Graph après EK : ");
+			System.out.println("Graph apres EK : ");
 			graph.printGraph();
 		}
 }
