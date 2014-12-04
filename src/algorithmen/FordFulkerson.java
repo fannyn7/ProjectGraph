@@ -1,7 +1,6 @@
 package algorithmen;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Stack;
 
 import javax.swing.JFrame;
@@ -11,21 +10,26 @@ import graph.Graph;
 
 public class FordFulkerson {
 
-	private Graph graph;
+	//private Graph graph;
 	private ArrayList<ArrayList<Integer>> pathList;
 	public int i = 0;
 
+	public FordFulkerson(){
+		//graph = g;
+		pathList = new ArrayList<ArrayList<Integer>>();
+	}
+	
 	public FordFulkerson(Graph g){
-		graph = g;
+		//graph = g;
 		pathList = new ArrayList<ArrayList<Integer>>();
 	}
 
 	public FordFulkerson(Graph g, ArrayList<ArrayList<Integer>> list){
-		graph = g;
+		//graph = g;
 		pathList = list;
 	}
 
-	public void fordFulkerson(int start, int target){
+	public void fordFulkerson(Graph graph, int start, int target){
 
 		int n = graph.getKnotenPosition().size();
 		int[][] flow = new int[n][n];

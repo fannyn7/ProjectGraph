@@ -77,13 +77,11 @@ public class Test {
 			frame.setSize(1000,600);
 			frame.setVisible(true);*/
 			
-			int n = graph.getCapacity().length;
-			int flow;
 			System.out.println("Graph avant FF : ");
 			graph.printGraph();
 			
-			FordFulkerson ff = new FordFulkerson(graph);
-			ff.fordFulkerson(0, 5);
+			FordFulkerson ff = new FordFulkerson();
+			ff.fordFulkerson(graph, 0, 5);
 
 			System.out.println("Graph après FF : ");
 			System.out.println("Graph avant EK : ");

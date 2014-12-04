@@ -9,8 +9,12 @@ import javax.swing.JPanel;
 
 public class Graph extends JPanel {
 
-	private ArrayList<Position> knotenPosition = new ArrayList<Position>();
+	private ArrayList<Position> knotenPosition;
 	private int[][] capacity;
+	
+	public Graph(){
+		knotenPosition = new ArrayList<Position>();
+	}
 	
 	public Graph(ArrayList<Position> pos, int[][] c){
 		knotenPosition = pos;
